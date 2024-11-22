@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Real-Time Location Tracker</title>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+   </head>
+   <body>
+       <h1>Real-Time Location Tracker</h1>
+       <input type="text" id="deviceName" placeholder="Enter device name">
+       <button onclick="startTracking()">Start Tracking</button>
+
+       <div id="locations"></div>
+
+       <script>
+           const socket = io.connect('http://127.0.0.1:5000');
+
+           function startTracking() {
+               const deviceName = document.getElementById('deviceName').value;
+               if (!deviceName) {
+                   alert("Please enter a device name.");
+                   return;
+               }
+
+               // Simulate location updates
+               setInterval(() => {
+                   const location = {
+                       lat: (Math.random() * 180 - 90).toFixed(6),
+                       lng: (Math.random() * 360 - 180).toFixed(6)
+                   };
+                   socket.emit('update_location', { device_name: deviceName, location });
+               }, 5000); // Update every 5 seconds
+           }
+
+           socket.on('location_updated', function(data) {
+               const locationsDiv = document.getElementById('locations');
+               locationsDiv.innerHTML = ''; // Clear previous locations
+               for (const [device, location] of Object.entries(data)) {
+                   const locationItem = document.createElement('div');
+                   locationItem.textContent = `${device}: Latitude ${location.lat}, Longitude ${location.lng}`;
+                   locationsDiv.appendChild(locationItem);
+               }
+           });
+       </script>
+   </body>
+   </html>
