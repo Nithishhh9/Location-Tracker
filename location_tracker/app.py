@@ -2,13 +2,15 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 from flask_cors import CORS
 import json
-import os
+import os  
 
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app)
    
 DATA_FILE = 'device_locations.json'
+
+
 
 def load_device_data():
     if os.path.exists(DATA_FILE):
