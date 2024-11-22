@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app)
-
+   
 DATA_FILE = 'device_locations.json'
 
 def load_device_data():
