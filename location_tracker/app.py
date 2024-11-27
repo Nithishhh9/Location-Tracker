@@ -33,7 +33,10 @@ def index():
 @socketio.on('update_location')
 def handle_location_update(data):
     device_name = data['device_name']
-    location = data['location']
+    location = data['location']   
+
+    
+            
        
     device_data = load_device_data()
     device_data[device_name] = location
